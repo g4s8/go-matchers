@@ -7,7 +7,7 @@ import (
 	"reflect"
 )
 
-func kindAnyOf(kind reflect.Kind, any []reflect.Kind) bool {
+func kindAnyOf(kind reflect.Kind, any ...reflect.Kind) bool {
 	for _, a := range any {
 		if kind == a {
 			return true

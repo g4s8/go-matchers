@@ -4,23 +4,18 @@
 package matchers
 
 import (
-	"reflect"
+	r "reflect"
 )
 
 type mNil struct {
-}
-
-var nillableKinds = []reflect.Kind{
-	reflect.Chan, reflect.Slice, reflect.Interface,
-	reflect.Func, reflect.Ptr, reflect.Map,
 }
 
 func (m *mNil) Check(target interface{}) bool {
 	if target == nil {
 		return true
 	}
-	val := reflect.ValueOf(target)
-	if kindAnyOf(val.Kind(), nillableKinds) {
+	val := r.ValueOf(target)
+	if kindAnyOf(val.Kind(), r.Chan, r.Slice, r.Interface, r.Func, r.Ptr, r.Map) {
 		return val.IsNil()
 	}
 	return false
