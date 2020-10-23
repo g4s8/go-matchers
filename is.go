@@ -21,5 +21,5 @@ func (m *mIs) String() string {
 
 // Is matcher to compare target has same value as expected
 func Is(expect interface{}) Matcher {
-	return &mEquals{expect}
+	return &mIs{expect}
 }

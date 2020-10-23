@@ -8,19 +8,19 @@ import (
 	"reflect"
 )
 
-type mEquals struct {
+type mEq struct {
 	expected interface{}
 }
 
-func (m *mEquals) Check(val interface{}) bool {
+func (m *mEq) Check(val interface{}) bool {
 	return reflect.DeepEqual(m.expected, val)
 }
 
-func (m *mEquals) String() string {
+func (m *mEq) String() string {
 	return fmt.Sprintf("equal to %v", m.expected)
 }
 
-// Equals matcher to compare target equality
-func Equals(expect interface{}) Matcher {
-	return &mEquals{expect}
+// Eq matcher to compare target equality
+func Eq(expect interface{}) Matcher {
+	return &mEq{expect}
 }

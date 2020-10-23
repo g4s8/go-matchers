@@ -34,3 +34,40 @@ func LenIs(expect int) Matcher {
 func Len(matcher Matcher) Matcher {
 	return &mLen{matcher}
 }
+
+type mHasItem struct {
+	m Matcher
+}
+
+func (m *mHasItem) Check(target interface{}) bool {
+	val := r.ValueOf(target)
+	if !kindAnyOf(val.Kind(), r.Array, r.Slice, r.String) {
+		return false
+	}
+	isStr := val.Kind() == r.String
+	size := val.Len()
+	for i := 0; i < size; i++ {
+		idx := val.Index(i).Interface()
+		if isStr {
+			idx = rune(idx.(uint8))
+		}
+		if m.m.Check(idx) {
+			return true
+		}
+	}
+	return false
+}
+
+func (m *mHasItem) String() string {
+	return fmt.Sprintf("has item %s", m.m)
+}
+
+// HasItem checks if collection has an item matches to item matcher
+func HasItem(m Matcher) Matcher {
+	return &mHasItem{m}
+}
+
+// HasItemEq checks if collection has an item equal to expected
+func HasItemEq(item interface{}) Matcher {
+	return HasItem(Eq(item))
+}
